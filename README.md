@@ -1,6 +1,8 @@
 # slayerOS
 My very own web based OS-like environment made for the Hack Club Stardance mission "web OS 1"
 
+![slayerOS image](./img/img.png "slayerOS image")
+
 ## Tech Stack
 I used the following to build this app:
 * HTML5
