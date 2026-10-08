@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>slayerOS</title>
+    <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            font-family: 'Google Sans', sans-serif !important;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden select-none bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1920&q=80');">
+    <main id="desktop" class="relative h-[calc(100vh-3rem)] w-full p-6 flex-col flex gap-4">
+        <button id="nicon" class="w-20 flex flex-col items-center gap-1.5 p-2 rounded-lg hover:bg-white/10 active:bg-white/20 transition group">
+            <div class="w-12 h-12 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                📝
+            </div>
+            <span class="text-xs text-white drop-shadow font-medium">Notes</span>
+        </button>
+        <button id="calc-icon" class="w-20 flex flex-col items-center gap-1.5 p-2 rounded-lg hover:bg-white/10 active:bg-white/20 transition group">
+            <div class="w-12 h-12 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                🟰
+            </div>
+            <span class="text-xs text-white drop-shadow font-medium">Calculator</span>
+        </button>
+        <button id="f1-icon" class="w-20 flex flex-col items-center gap-1.5 p-2 rounded-lg hover:bg-white/10 active:bg-white/20 transition group">
+            <div class="w-12 h-12 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                🏎️
+            </div>
+            <span class="text-xs text-white drop-shadow font-medium">F1 Hub</span>
+        </button>
+
+        <div id="welcome-window" class="absolute top-24 left-1/2 -ml-48 w-96 bg-slate-950/90 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50">
+            <div id="welcome-header" class="h-9 bg-white/10 px-3 flex items-center justify-between cursor-move select-none border-b border-white/10">
+                <div class="flex items-center gap-2 text-white/90 text-xs font-semibold">
+                    <span>✨</span>
+                    <span>Welcome to slayerOS</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="welcome-close" title="close" class="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-400 transition"></button>
+                </div>
+            </div>
+            <div class="p-6 flex flex-col items-center text-center gap-3 text-white">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-2xl shadow-lg border border-white/20">
+                    ⚡
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-white">slayerOS</h1>
+                    <h3 class="text-xs text-white/60 font-medium mt-1">built by tanzeemrockz</h3>
+                </div>
+                <div class="flex flex-col gap-2 w-full mt-2 text-xs">
+                    <a href="https://github.com/tanzeemrockz" target="_blank" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-white transition">
+                        <span>🐙</span>
+                        <span>GitHub: @tanzeemrockz</span>
+                    </a>
+                    <a href="https://metropolis.cyberslayercorpz.dev" target="_blank" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-white transition">
+                        <span>🌐</span>
+                        <span>metropolis.cyberslayercorpz.dev</span>
+                    </a>
+                    <a href="https://cyberslayercorpz.dev" target="_blank" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-white transition">
+                        <span>🚀</span>
+                        <span>cyberslayercorpz.dev</span>
+                    </a>
+                </div>
+                <button id="welcome-enter-btn" class="w-full mt-2 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow transition">
+                    Get Started
+                </button>
+            </div>
+        </div>
+
+        <div id="notes-window" class="absolute top-20 left-28 w-96 h-72 bg-black/80 backdrop-blur-2xl border border-white/20 rounded-xl shadow-2xl flex flex-col overflow-hidden">
+            <div id="notes-header" class="h-9 bg-white/10 px-3 flex items-center justify-between cursor-move select-none border-b border-white/10">
+                <div class="flex items-center gap-2 text-white/90 text-xs font-medium">
+                    <span>📝</span>
+                    <span>Notes</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="nmin" class="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-400 transition"></button>
+                    <button id="nmax" class="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-400 transition"></button>
+                    <button id="nclose" class="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-400 transition"></button>
+                </div>
+            </div>
+            <div class="flex-1 p-3 text-white/80 text-sm overflow-auto">
+                <textarea id="ntextarea" placeholder="Notes go in here..." class="w-full h-full bg-transparent resize-none outline-none text-white placeholder-white/40 text-xs leading-relaxed"></textarea>
+            </div>
+        </div>
+
+        <div id="calc-window" class="hidden absolute top-28 left-64 w-64 bg-black/80 backdrop-blur-2xl border border-white/20 rounded-xl shadow-2xl flex flex-col overflow-hidden">
+            <div id="calc-header" class="h-9 bg-white/10 px-3 flex items-center justify-between cursor-move select-none border-b border-white/10">
+                <div class="flex items-center gap-2 text-white/90 text-xs font-medium">
+                    <span>🔢</span>
+                    <span>Calculator</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="cclose" title="close" class="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-400 transition"></button>
+                </div>
+            </div>
+            <div class="p-3 flex flex-col gap-2">
+                <div id="calc-display" class="h-10 bg-white/5 border border-white/10 rounded-lg text-right px-3 flex items-center justify-end text-white text-lg select-all">0</div>
+                <div class="grid grid-cols-4 gap-1.5 text-xs font-medium text-white">
+                    <button class="calc-btn p-2 rounded bg-white/10 hover:bg-white/20" data-val="C">C</button>
+                    <button class="calc-btn p-2 rounded bg-white/10 hover:bg-white/20" data-val="/">/</button>
+                    <button class="calc-btn p-2 rounded bg-white/10 hover:bg-white/20" data-val="*">*</button>
+                    <button class="calc-btn p-2 rounded bg-white/10 hover:bg-white/20" data-val="-">-</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="7">7</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="8">8</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="9">9</button>
+                    <button class="calc-btn p-2 rounded bg-white/10 hover:bg-white/20" data-val="+">+</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="4">4</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="5">5</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="6">6</button>
+                    <button class="calc-btn p-2 rounded bg-blue-600 hover:bg-blue-500 row-span-2 flex items-center justify-center font-bold" data-val="=">=</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="1">1</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="2">2</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val="3">3</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15 col-span-2" data-val="0">0</button>
+                    <button class="calc-btn p-2 rounded bg-white/5 hover:bg-white/15" data-val=".">.</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="f1-window" class="hidden absolute top-14 left-44 w-[460px] bg-slate-950/90 backdrop-blur-2xl border border-red-500/30 rounded-xl shadow-2xl flex flex-col overflow-hidden">
+            <div id="f1-header" class="h-9 bg-red-600/20 px-3 flex items-center justify-between cursor-move select-none border-b border-red-500/20">
+                <div class="flex items-center gap-2 text-white/90 text-xs font-semibold tracking-wide">
+                    <span>🏎️</span>
+                    <span>Formula 1 Hub</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="f1-close" title="close" class="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-400 transition"></button>
+                </div>
+            </div>
+            <div class="p-4 flex flex-col gap-3 overflow-y-auto max-h-[420px] text-white">
+                <div class="p-3 rounded-lg bg-gradient-to-r from-red-950/50 to-slate-900/60 border border-red-500/30 flex justify-between items-center">
+                    <div>
+                        <div id="f1-session-status" class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span>Checking Live Schedule...</span>
+                        </div>
+                        <div id="f1-race-name" class="text-sm font-bold text-white mt-0.5">Fetching Grand Prix...</div>
+                        <div id="f1-circuit-name" class="text-xs text-white/60">Connecting...</div>
+                    </div>
+                    <div class="text-right flex flex-col items-end gap-1">
+                        <span id="f1-country" class="px-2 py-0.5 rounded bg-red-600/30 text-red-300 text-[10px] border border-red-500/40">F1</span>
+                        <span id="f1-subbadge" class="text-[9px] text-white/50"></span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 p-1 bg-white/5 rounded-lg border border-white/10 text-xs">
+                    <button id="f1-tab-race" class="flex-1 py-1.5 rounded-md font-semibold text-center bg-red-600 text-white transition">Race Results</button>
+                    <button id="f1-tab-session" class="flex-1 py-1.5 rounded-md font-semibold text-center text-white/60 hover:text-white transition">Latest Session</button>
+                </div>
+
+                <div>
+                    <div id="f1-view-title" class="text-[11px] font-semibold text-white/70 uppercase tracking-wider mb-2">Race Classification</div>
+                    <div id="f1-results-list" class="flex flex-col gap-1.5 text-xs">
+                        <div class="p-3 text-white/40 text-center">Loading session classification...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="smenu" class="hidden absolute bottom-14 left-4 w-72 bg-slate-900/90 backdrop-blur-2xl border border-white/20 rounded-2xl p-4 flex flex-col gap-3 z-50">
+        <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+            <div class="w-10 h-10 rounded-full bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-lg">⚡</div>
+            <div>
+                <div class="text-sm font-semibold text-white">Certified Slayer</div>
+                <div class="text-xs font-semibold text-white/50">slayerOS v&lt;idk&gt;</div>
+            </div>
+        </div>
+        <div class="flex flex-col gap-1">
+            <button id="sNotes" class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/10 text-left text-white/80 hover:text-white transition">
+                <span>📝</span><span>Notes</span>
+            </button>
+            <button id="sCalc" class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/10 text-left text-white/80 hover:text-white transition">
+                <span>🟰</span><span>Calculator</span>
+            </button>
+            <button id="sF1" class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/10 text-left text-white/80 hover:text-white transition">
+                <span>🏎️</span><span>F1 Hub</span>
+            </button>
+        </div>
+    </div>
+
+    <footer class="h-12 w-full bg-slate-900/60 backdrop-blur-xl border-t border-white/10 fixed bottom-0 left-0 flex items-center justify-between px-4 z-50">
+        <div class="flex items-center gap-3">
+            <button id="start-btn" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-xs font-semibold shadow">slay</button>
+            <div id="tapps" class="flex items-center gap-2"></div>
+        </div>
+        <div id="clock" class="text-xs text-white/90 tracking-wide">
+         12:00 PM
+        </div>
+    </footer>     
+
+    <script>
+    const welcomeWin = document.getElementById('welcome-window');
+    const welcomeHeader = document.getElementById('welcome-header');
+    const welcomeClose = document.getElementById('welcome-close');
+    const welcomeEnterBtn = document.getElementById('welcome-enter-btn');
+
+    const calcWin = document.getElementById('calc-window');
+    const calcHeader = document.getElementById('calc-header');
+    const calcIcon = document.getElementById('calc-icon');
+    const sCalc = document.getElementById('sCalc');
+    const cClose = document.getElementById('cclose');
+    const calcDisplay = document.getElementById('calc-display');
+    const f1Win = document.getElementById('f1-window');
+    const f1Header = document.getElementById('f1-header');
+    const f1Icon = document.getElementById('f1-icon');
+    const sF1 = document.getElementById('sF1');
+    const f1Close = document.getElementById('f1-close');
+    const f1SessionStatus = document.getElementById('f1-session-status');
+    const f1RaceName = document.getElementById('f1-race-name');
+    const f1CircuitName = document.getElementById('f1-circuit-name');
+    const f1Country = document.getElementById('f1-country');
+    const f1SubBadge = document.getElementById('f1-subbadge');
+    const f1TabRace = document.getElementById('f1-tab-race');
+    const f1TabSession = document.getElementById('f1-tab-session');
+    const f1ViewTitle = document.getElementById('f1-view-title');
+    const f1ResultsList = document.getElementById('f1-results-list');
+    const minBtn = document.getElementById('nmin');
+    const tapps = document.getElementById('tapps');
+    const nTab = document.createElement('button');
+    const ntextarea = document.getElementById('ntextarea');
+    const wind = document.getElementById('notes-window');
+    const header = document.getElementById('notes-header');
+    const closeBtn = document.getElementById('nclose');
+    const maxBtn = document.getElementById('nmax');
+    const notesIcon = document.getElementById('nicon');
+    const startBtn = document.getElementById('start-btn');
+    const startMenu = document.getElementById('smenu');
+    const startNotes = document.getElementById('sNotes');
+
+    let isWelcomeDragging = false;
+    let welcomeOffsetX = 0;
+    let welcomeOffsetY = 0;
+    let f1Loaded = false;
+    let isF1Dragging = false;
+    let f1OffsetX = 0;
+    let f1OffsetY = 0;
+    let currentTab = 'race';
+    let cachedRaceResults = [];
+    let cachedSessionResults = [];
+    let sessionResultHeading = 'Latest Session Classification';
+    let calcExpression = '';
+    let isCalcDragging = false;
+    let calcOffsetX = 0;
+    let calcOffsetY = 0;
+    let isMaximized = false;
+    let savedPosition = { top: '', left: '', width: '', height: '' };
+    let highestZ = 60;
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    function bringToFront(element) {
+        highestZ++;
+        element.style.zIndex = highestZ;
+    }
+
+    welcomeHeader.addEventListener('mousedown', (e) => {
+        isWelcomeDragging = true;
+        welcomeOffsetX = e.clientX - welcomeWin.offsetLeft;
+        welcomeOffsetY = e.clientY - welcomeWin.offsetTop;
+        bringToFront(welcomeWin);
+    });
+
+    welcomeWin.addEventListener('mousedown', () => bringToFront(welcomeWin));
+
+    welcomeClose.addEventListener('click', () => {
+        welcomeWin.classList.add('hidden');
+    });
+
+    welcomeEnterBtn.addEventListener('click', () => {
+        welcomeWin.classList.add('hidden');
+    });
+
+    function renderList(items) {
+        f1ResultsList.innerHTML = '';
+        if (!items || items.length === 0) {
+            f1ResultsList.innerHTML = '<div class="p-3 text-white/40 text-center">No classification data recorded yet.</div>';
+            return;
+        }
+        items.slice(0, 10).forEach((item) => {
+            const row = document.createElement('div');
+            row.className = 'flex items-center justify-between p-2 rounded bg-white/5 border border-white/10';
+            const pos = item.pos;
+            const posColor = pos === '1' ? 'text-red-400' : (pos === '2' ? 'text-blue-400' : (pos === '3' ? 'text-yellow-400' : 'text-white/60'));
+            row.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span class="font-bold w-6 ${posColor}">P${pos}</span>
+                    <span class="font-medium text-white">${item.name}</span>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-white/70 font-semibold">${item.extra}</span>
+                    <div class="text-[10px] text-white/40">${item.team}</div>
+                </div>
+            `;
+            f1ResultsList.appendChild(row);
+        });
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        if (tab === 'race') {
+            f1TabRace.className = 'flex-1 py-1.5 rounded-md font-semibold text-center bg-red-600 text-white transition';
+            f1TabSession.className = 'flex-1 py-1.5 rounded-md font-semibold text-center text-white/60 hover:text-white transition';
+            f1ViewTitle.innerText = 'Race Classification';
+            renderList(cachedRaceResults);
+        } else {
+            f1TabSession.className = 'flex-1 py-1.5 rounded-md font-semibold text-center bg-red-600 text-white transition';
+            f1TabRace.className = 'flex-1 py-1.5 rounded-md font-semibold text-center text-white/60 hover:text-white transition';
+            f1ViewTitle.innerText = sessionResultHeading;
+            renderList(cachedSessionResults);
+        }
+    }
+
+    f1TabRace.addEventListener('click', () => switchTab('race'));
+    f1TabSession.addEventListener('click', () => switchTab('session'));
+
+    async function loadF1Data() {
+        try {
+            let raceRes = await fetch('https://api.jolpi.ca/ergast/f1/current/last/results.json');
+            let raceData = await raceRes.json();
+            let race = raceData?.MRData?.RaceTable?.Races?.[0];
+            if (!race) {
+                raceRes = await fetch('https://api.jolpi.ca/ergast/f1/2024/last/results.json');
+                raceData = await raceRes.json();
+                race = raceData?.MRData?.RaceTable?.Races?.[0];
+            }
+
+            if (race) {
+                f1RaceName.innerText = race.raceName;
+                f1CircuitName.innerText = race.Circuit.circuitName;
+                f1Country.innerText = race.Circuit.Location.country;
+
+                cachedRaceResults = (race.Results || []).map((r) => ({
+                    pos: r.position,
+                    name: `${r.Driver.givenName} ${r.Driver.familyName}`,
+                    team: r.Constructor.name,
+                    extra: r.Time ? r.Time.time : r.status
+                }));
+            }
+
+            const sessionsRes = await fetch('https://api.openf1.org/v1/sessions?meeting_key=latest');
+            const sessions = await sessionsRes.json();
+
+            if (Array.isArray(sessions) && sessions.length > 0) {
+                const now = new Date();
+                sessions.sort((a, b) => new Date(a.date_start) - new Date(b.date_start));
+
+                const liveSession = sessions.find((s) => now >= new Date(s.date_start) && now <= new Date(s.date_end));
+                const completedSessions = sessions.filter((s) => now > new Date(s.date_end));
+
+                if (liveSession) {
+                    f1SessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>LIVE: ${liveSession.session_name}</span>`;
+                    const priorSession = completedSessions[completedSessions.length - 1];
+                    if (priorSession) {
+                        sessionResultHeading = `Completed: ${priorSession.session_name} Results`;
+                        f1SubBadge.innerText = `Showing ${priorSession.session_name}`;
+                        await fetchSessionClassification(priorSession.session_key);
+                    } else {
+                        sessionResultHeading = `${liveSession.session_name} In Progress`;
+                        cachedSessionResults = [];
+                    }
+                } else if (completedSessions.length > 0) {
+                    const lastDone = completedSessions[completedSessions.length - 1];
+                    f1SessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-400"></span><span>Latest: ${lastDone.session_name}</span>`;
+                    sessionResultHeading = `${lastDone.session_name} Results`;
+                    f1SubBadge.innerText = lastDone.session_name;
+                    await fetchSessionClassification(lastDone.session_key);
+                }
+            } else {
+                f1SessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-400"></span><span>Grand Prix Completed</span>`;
+                sessionResultHeading = 'Qualifying Classification';
+                await loadFallbackQualifying();
+            }
+
+            switchTab(currentTab);
+        } catch {
+            f1RaceName.innerText = 'Unavailable';
+            f1CircuitName.innerText = 'Could not fetch live telemetry';
+            f1ResultsList.innerHTML = '<div class="p-3 text-red-400 text-center">Failed to load F1 data</div>';
+        }
+    }
+
+    async function fetchSessionClassification(sessionKey) {
+        try {
+            const driversRes = await fetch(`https://api.openf1.org/v1/drivers?session_key=${sessionKey}`);
+            const drivers = await driversRes.json();
+
+            const driverMap = {};
+            drivers.forEach((d) => {
+                driverMap[d.driver_number] = {
+                    name: d.broadcast_name || d.full_name,
+                    team: d.team_name || ''
+                };
+            });
+
+            const posRes = await fetch(`https://api.openf1.org/v1/position?session_key=${sessionKey}`);
+            const positions = await posRes.json();
+
+            const finalPositions = {};
+            positions.forEach((p) => {
+                finalPositions[p.driver_number] = p.position;
+            });
+
+            const sorted = Object.keys(finalPositions)
+                .map((num) => ({
+                    pos: String(finalPositions[num]),
+                    name: driverMap[num]?.name || `#${num}`,
+                    team: driverMap[num]?.team || '',
+                    extra: 'Finished'
+                }))
+                .sort((a, b) => Number(a.pos) - Number(b.pos));
+
+            if (sorted.length > 0) {
+                cachedSessionResults = sorted;
+            } else {
+                await loadFallbackQualifying();
+            }
+        } catch {
+            await loadFallbackQualifying();
+        }
+    }
+
+    async function loadFallbackQualifying() {
+        try {
+            let res = await fetch('https://api.jolpi.ca/ergast/f1/current/last/qualifying.json');
+            let data = await res.json();
+            let race = data?.MRData?.RaceTable?.Races?.[0];
+            if (!race) {
+                res = await fetch('https://api.jolpi.ca/ergast/f1/2024/last/qualifying.json');
+                data = await res.json();
+                race = data?.MRData?.RaceTable?.Races?.[0];
+            }
+            if (race) {
+                cachedSessionResults = (race.QualifyingResults || []).map((q) => ({
+                    pos: q.position,
+                    name: `${q.Driver.givenName} ${q.Driver.familyName}`,
+                    team: q.Constructor.name,
+                    extra: q.Q3 || q.Q2 || q.Q1 || 'Time Set'
+                }));
+            }
+        } catch {}
+    }
+
+    f1Header.addEventListener('mousedown', (e) => {
+        isF1Dragging = true;
+        f1OffsetX = e.clientX - f1Win.offsetLeft;
+        f1OffsetY = e.clientY - f1Win.offsetTop;
+        bringToFront(f1Win);
+    });
+
+    f1Win.addEventListener('mousedown', () => bringToFront(f1Win));
+
+    function openF1() {
+        f1Win.classList.remove('hidden');
+        bringToFront(f1Win);
+        if (!f1Loaded) {
+            f1Loaded = true;
+            loadF1Data();
+        }
+    }
+
+    f1Icon.addEventListener('click', openF1);
+    sF1.addEventListener('click', () => {
+        openF1();
+        startMenu.classList.add('hidden');
+    });
+
+    f1Close.addEventListener('click', (e) => {
+        e.stopPropagation();
+        f1Win.classList.add('hidden');
+    });
+
+    calcHeader.addEventListener('mousedown', (e) => {
+        isCalcDragging = true;
+        calcOffsetX = e.clientX - calcWin.offsetLeft;
+        calcOffsetY = e.clientY - calcWin.offsetTop;
+        bringToFront(calcWin);
+    });
+
+    calcWin.addEventListener('mousedown', () => bringToFront(calcWin));
+
+    function openCalc() {
+        calcWin.classList.remove('hidden');
+        bringToFront(calcWin);
+    }
+
+    calcIcon.addEventListener('click', openCalc);
+    sCalc.addEventListener('click', () => {
+        openCalc();
+        startMenu.classList.add('hidden');
+    });
+
+    cClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        calcWin.classList.add('hidden');
+    });
+
+    document.querySelectorAll('.calc-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const val = btn.getAttribute('data-val');
+            if (val === 'C') {
+                calcExpression = '';
+                calcDisplay.innerText = '0';
+            } else if (val === '=') {
+                try {
+                    calcDisplay.innerText = Function(`'use strict'; return (${calcExpression})`)();
+                    calcExpression = calcDisplay.innerText;
+                } catch {
+                    calcDisplay.innerText = 'Error';    
+                    calcExpression = '';
+                }
+            } else {
+                if (calcDisplay.innerText === '0' && !isNaN(val)) {
+                    calcExpression = val;
+                } else {
+                    calcExpression += val;
+                }
+                calcDisplay.innerText = calcExpression;
+            }
+        });
+    });
+
+    startBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startMenu.classList.toggle('hidden');
+    });
+
+    startMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    document.addEventListener('click', () => {
+        startMenu.classList.add('hidden');
+    });
+
+    startNotes.addEventListener('click', () => {
+        wind.classList.remove('hidden');
+        bringToFront(wind);
+        showTaskTab();
+        startMenu.classList.add('hidden');
+    });
+    
+    nTab.id = 'tNotes';
+    nTab.className = 'px-3 py-1 bg-white/10 hover:bg-white/20 border border-white/15 text-white rounded text-xs flex items-center gap-1.5 transition';
+    nTab.innerHTML = '<span>📝</span><span>Notes</span>';
+
+    function showTaskTab() {
+        if (!document.getElementById('tNotes')) {
+            tapps.appendChild(nTab);
+        }
+    }
+
+    nTab.addEventListener('click', () => {
+        if (wind.classList.contains('hidden')) {
+            wind.classList.remove('hidden');
+            bringToFront(wind);
+        } else {
+            wind.classList.add('hidden');
+        }
+    });
+
+    minBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wind.classList.add('hidden');
+        showTaskTab();
+    });
+
+    notesIcon.addEventListener('click', () => {
+        showTaskTab();
+    });
+
+    closeBtn.addEventListener('click', () => {
+        nTab.remove();
+    });
+
+    maxBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!isMaximized) {
+            savedPosition = {
+                top: wind.style.top || '5rem',
+                left: wind.style.left || '7rem',
+                width: wind.style.width || '24rem',
+                height: wind.style.height || '18rem'
+            };
+            wind.style.top = '0px';
+            wind.style.left = '0px';
+            wind.style.width = '100%';
+            wind.style.height = 'calc(100vh - 3rem)';
+            wind.classList.remove('rounded-xl');
+            wind.classList.add('rounded-none');
+            isMaximized = true;
+        } else {
+            wind.style.top = savedPosition.top;
+            wind.style.left = savedPosition.left;
+            wind.style.width = savedPosition.width;
+            wind.style.height = savedPosition.height;
+            wind.classList.remove('rounded-none');
+            wind.classList.add('rounded-xl');
+            isMaximized = false;
+        }
+    });
+
+    header.addEventListener('mousedown', (e) => {
+        if (isMaximized) return;
+        isDragging = true;
+        offsetX = e.clientX - wind.offsetLeft;
+        offsetY = e.clientY - wind.offsetTop;
+    });
+    
+    ntextarea.value = localStorage.getItem('slayer_notes') || '';
+    ntextarea.addEventListener('input', () => {
+        localStorage.setItem('slayer_notes', ntextarea.value);
+    });
+
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wind.classList.add('hidden');
+    });
+
+    notesIcon.addEventListener('click', () => {
+        wind.classList.remove('hidden');
+        bringToFront(wind);
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+        if (isWelcomeDragging) {
+            welcomeWin.style.left = `${e.clientX - welcomeOffsetX}px`;
+            welcomeWin.style.top = `${e.clientY - welcomeOffsetY}px`;
+            welcomeWin.style.marginLeft = '0px';
+        }
+        if (isDragging) {
+            wind.style.left = `${e.clientX - offsetX}px`;
+            wind.style.top = `${e.clientY - offsetY}px`;
+        }
+        if (isCalcDragging) {
+            calcWin.style.left = `${e.clientX - calcOffsetX}px`;
+            calcWin.style.top = `${e.clientY - calcOffsetY}px`;
+        }
+        if (isF1Dragging) {
+            f1Win.style.left = `${e.clientX - f1OffsetX}px`;
+            f1Win.style.top = `${e.clientY - f1OffsetY}px`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isWelcomeDragging = false;
+        isDragging = false;
+        isCalcDragging = false;
+        isF1Dragging = false;
+    });
+    
+    function updateClock() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        document.getElementById('clock').innerText = `${hours}:${minutes}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
